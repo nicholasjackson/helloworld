@@ -1,0 +1,8 @@
+# binaries
+helloworld
+!_build/dockercompose/helloworld
+!_build/dockerfile/helloworld
+
+# other
+.DS_Store
+_build/dockerfile/helloworld/swagger_spec

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec /usr/bin/consul-template -consul=$CONSUL -template "/helloworld/config.ctmpl:/helloworld/config.json:killall helloworld"
