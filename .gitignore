@@ -1,7 +1,6 @@
 # binaries
 helloworld
-!_build/dockercompose/helloworld
-!_build/dockerfile/helloworld
+_build/dockerfile/helloworld/helloworld
 
 # other
 .DS_Store

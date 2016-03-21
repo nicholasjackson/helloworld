@@ -1,7 +1,7 @@
 ---
-go:
-  namespace: 'github.com/nicholasjackson'
-  application_name: 'helloworld'
+namespace: 'github.com/nicholasjackson'
+application_name: 'helloworld'
+language: go
 docker_registry:
   url: <%= ENV['DOCKER_REGISTRY_URL'] %>
   user: <%= ENV['DOCKER_REGISTRY_USER'] %>

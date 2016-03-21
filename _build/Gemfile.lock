@@ -1,10 +1,10 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (3.2.22.1)
-      activesupport (= 3.2.22.1)
+    activemodel (3.2.22.2)
+      activesupport (= 3.2.22.2)
       builder (~> 3.0.0)
-    activesupport (3.2.22.1)
+    activesupport (3.2.22.2)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     builder (3.0.4)
@@ -28,9 +28,9 @@ GEM
     docker-api (1.26.2)
       excon (>= 0.38.0)
       json
-    domain_name (0.5.20160216)
+    domain_name (0.5.20160310)
       unf (>= 0.0.5, < 1.0.0)
-    excon (0.45.4)
+    excon (0.48.0)
     factory_girl (4.3.0)
       activesupport (>= 3.0.0)
     gherkin (2.12.2)
@@ -43,7 +43,7 @@ GEM
       multi_json
     mime-types (2.99.1)
     mini_portile2 (2.0.0)
-    minke (0.12.0)
+    minke (0.14.0)
       consul_loader (~> 1.0)
       cucumber
       docker-api
@@ -79,7 +79,7 @@ GEM
       rspec-core (~> 3.4.0)
       rspec-expectations (~> 3.4.0)
       rspec-mocks (~> 3.4.0)
-    rspec-core (3.4.3)
+    rspec-core (3.4.4)
       rspec-support (~> 3.4.0)
     rspec-expectations (3.4.0)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -88,7 +88,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
-    tzinfo (0.3.46)
+    tzinfo (0.3.47)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.2)
