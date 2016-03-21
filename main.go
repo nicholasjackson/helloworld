@@ -4,11 +4,12 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+
 	"github.com/nicholasjackson/helloworld/global"
 	"github.com/nicholasjackson/helloworld/handlers"
 
+	"github.com/alexcesaro/statsd"
 	"github.com/facebookgo/inject"
-	 "github.com/alexcesaro/statsd"
 )
 
 func main() {
@@ -33,7 +34,7 @@ func setupInjection() {
 
 	var err error
 
-	statsdClient, err := statsd.New(global.Config.StatsDServerIP) // reference to a statsd client
+	statsdClient, err := statsd.New(statsd.Address(global.Config.StatsDServerIP)) // reference to a statsd client
 	if err != nil {
 		panic(fmt.Sprintln("Unable to create StatsD Client: ", err))
 	}
