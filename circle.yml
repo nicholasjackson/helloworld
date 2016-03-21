@@ -17,4 +17,4 @@ dependencies:
 test:
   override:
     - cd /home/ubuntu/go/src/github.com/nicholasjackson/helloworld/_build && rake app:build_server
-    - cd /home/ubuntu/go/src/github.com/nicholasjackson/helloworld/_build && rake app:cucumber
+    - cd /home/ubuntu/go/src/github.com/nicholasjackson/helloworld/_build && rake app:cucumber 
