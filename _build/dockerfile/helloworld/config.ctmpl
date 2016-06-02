@@ -1,3 +1,4 @@
 {
-  "stats_d_server": "{{key "app/stats_d_server"}}"
+  "stats_d_server": "{{range service "statsd-8125"}}{{.Address}}{{end}}:{{range service "statsd-8125"}}{{.Port}}{{end}}",
+  "syslog_server": "{{range $index, $element := service "syslog-514"}}{{if eq $index 0}}{{.Address}}:{{.Port}}{{end}}{{end}}"
 }

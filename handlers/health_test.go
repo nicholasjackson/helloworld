@@ -2,14 +2,16 @@ package handlers
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 
 	"github.com/facebookgo/inject"
+	"github.com/nicholasjackson/helloworld/mocks"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"github.com/nicholasjackson/helloworld/mocks"
 )
 
 var healthStatsDMock *mocks.MockStatsD
@@ -25,6 +27,7 @@ func healthTestSetup(t *testing.T) {
 	err := g.Provide(
 		&inject.Object{Value: HealthDependencies},
 		&inject.Object{Value: healthStatsDMock, Name: "statsd"},
+		&inject.Object{Value: log.New(os.Stdout, "tester", log.Lshortfile)},
 	)
 
 	if err != nil {

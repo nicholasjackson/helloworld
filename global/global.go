@@ -8,6 +8,7 @@ import (
 
 type ConfigStruct struct {
 	StatsDServerIP string `json:"stats_d_server"`
+	SysLogIP       string `json:"syslog_server"`
 	RootFolder     string
 }
 

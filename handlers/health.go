@@ -2,8 +2,9 @@ package handlers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
-	
+
 	"github.com/nicholasjackson/helloworld/logging"
 )
 
@@ -31,6 +32,9 @@ type HealthDependenciesContainer struct {
 	// statsD interface must use a name type as injection cannot infer ducktypes
 	Stats logging.StatsD `inject:"statsd"`
 
+	// reference to the log writer
+	Log *log.Logger `inject:""`
+
 	// if not specified in the graph will automatically create private instance
 	PrivateBuilder *HealthResponseBuilder `inject:"private"`
 }
@@ -41,9 +45,12 @@ type HealthResponse struct {
 
 var HealthDependencies *HealthDependenciesContainer = &HealthDependenciesContainer{}
 
+const HHTAGNAME = "HealthHandler: "
+
 func HealthHandler(rw http.ResponseWriter, r *http.Request) {
 	// all HealthHandlerDependencies are automatically created by injection process
 	HealthDependencies.Stats.Increment(HEALTH_HANDLER + GET + CALLED)
+	HealthDependencies.Log.Printf("%v Called GET\n", HHTAGNAME)
 
 	response := HealthDependencies.SingletonBuilder.SetStatusMessage("OK").Build()
 

@@ -1,5 +1,5 @@
+require 'minke'
 require 'cucumber/rest_api'
-require 'cucumber/pickle_mongodb'
-require 'cucumber/mailcatcher'
 
-$SERVER_PATH = "http://#{ENV['DOCKER_IP']}:8001"
+discovery = Minke::Docker::ServiceDiscovery.new 'config.yml'
+$SERVER_PATH = "http://#{discovery.public_address_for 'helloworld', '8001', :cucumber}"

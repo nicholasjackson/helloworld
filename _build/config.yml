@@ -1,7 +1,7 @@
 ---
-namespace: 'github.com/nicholasjackson'
 application_name: 'helloworld'
-language: go
+namespace: 'github.com/nicholasjackson'
+generator_name: minke-generator-go
 docker_registry:
   url: <%= ENV['DOCKER_REGISTRY_URL'] %>
   user: <%= ENV['DOCKER_REGISTRY_USER'] %>
@@ -9,31 +9,40 @@ docker_registry:
   email: <%= ENV['DOCKER_REGISTRY_EMAIL'] %>
   namespace: <%= ENV['DOCKER_NAMESPACE'] %>
 docker:
-  docker_file: './dockerfile/helloworld/'
-  compose_file: './dockercompose/helloworld/docker-compose.yml'
-  build_args:
-    image: 'golang:latest'
-    env:
-      - 'CGO_ENABLED=0' # used for alpine linux static linking
-    working_directory: '/go/src/github.com/nicholasjackson/helloworld'
+  build_image: 'golang:latest'
+  application_docker_file: './dockerfile/helloworld/'
+  application_compose_file: './dockercompose/helloworld/docker-compose.yml'
+fetch:
+  enabled: true
+test:
+  enabled: true
+build:
+  post:
+    copy:
+      -
+        from: '../helloworld'
+        to: './dockerfile/helloworld'
+      -
+        from: './swagger_spec/swagger.yml'
+        to: './dockerfile/helloworld/swagger_spec'
 run:
-  consul_loader:
-    enabled: true
-    config_file: './consul_keys.yml'
-    url: <%= "http://#{ENV['DOCKER_IP']}:9500" %>
+  pre:
+    consul_loader:
+      config_file: './consul_keys.yml'
+      url:
+        address: consul
+        port: 8500
+        type: private
 cucumber:
-  consul_loader:
-    enabled: true
-    config_file: './consul_keys.yml'
-    url: <%= "http://#{ENV['DOCKER_IP']}:9500" %>
-  health_check:
-    enabled: true
-    url: <%= "http://#{ENV['DOCKER_IP']}:8001/v1/health" %>
-after_build:
-  copy_assets:
-    -
-      from: <%= "#{ENV['GOPATH']}/src/github.com/nicholasjackson/helloworld/helloworld" %>
-      to: './dockerfile/helloworld'
-    -
-      from: './swagger_spec/swagger.yml'
-      to: './dockerfile/helloworld/swagger_spec'
+  pre:
+    consul_loader:
+      config_file: './consul_keys.yml'
+      url:
+        address: consul
+        port: 8500
+        type: private
+    health_check:
+      address: helloworld
+      port: 8001
+      path: /v1/health
+      type: private

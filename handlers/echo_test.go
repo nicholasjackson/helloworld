@@ -3,15 +3,17 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 
 	"github.com/facebookgo/inject"
 	"github.com/gorilla/context"
+	"github.com/nicholasjackson/helloworld/mocks"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"github.com/nicholasjackson/helloworld/mocks"
 )
 
 var echoStatsDMock *mocks.MockStatsD
@@ -27,6 +29,7 @@ func echoTestSetup(t *testing.T) {
 	err := g.Provide(
 		&inject.Object{Value: EchoDependencies},
 		&inject.Object{Value: echoStatsDMock, Name: "statsd"},
+		&inject.Object{Value: log.New(os.Stdout, "tester", log.Lshortfile)},
 	)
 
 	if err != nil {

@@ -1,8 +1,12 @@
 machine:
   pre:
     - curl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0
+    - sudo rm /usr/local/bin/docker-compose
+    - sudo curl -L https://github.com/docker/compose/releases/download/1.7.1/docker-compose-`uname -s`-`uname -m` > docker-compose
+    - sudo mv docker-compose /usr/local/bin/
+    - chmod +x /usr/local/bin/docker-compose
   ruby:
-    version: 2.2.4
+    version: 2.3.1
   services:
     - docker
   environment:
@@ -11,10 +15,11 @@ machine:
 dependencies:
   override:
     - cd _build && bundle
+    - cd _build && bundle update
     - mkdir -p /home/ubuntu/go/src/github.com/nicholasjackson
     - cp -R /home/ubuntu/helloworld /home/ubuntu/go/src/github.com/nicholasjackson/
 
 test:
   override:
-    - cd /home/ubuntu/go/src/github.com/nicholasjackson/helloworld/_build && rake app:build_server
-    - cd /home/ubuntu/go/src/github.com/nicholasjackson/helloworld/_build && rake app:cucumber 
+    - cd /home/ubuntu/go/src/github.com/nicholasjackson/helloworld/_build && rake app:build_image
+    - cd /home/ubuntu/go/src/github.com/nicholasjackson/helloworld/_build && rake app:cucumber

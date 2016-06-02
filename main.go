@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"log/syslog"
 	"net/http"
 	"os"
 
@@ -39,11 +41,19 @@ func setupInjection() {
 		panic(fmt.Sprintln("Unable to create StatsD Client: ", err))
 	}
 
+	syslogWriter, err := syslog.Dial("udp", global.Config.SysLogIP, syslog.LOG_SYSLOG, "sorcery")
+	if err != nil {
+		panic(fmt.Sprintln("Unable to connect to syslog: ", err))
+	}
+
+	logWriter := log.New(syslogWriter, "hellos: ", log.Lshortfile)
+
 	err = g.Provide(
 		&inject.Object{Value: handlers.RouterDependencies},
 		&inject.Object{Value: handlers.HealthDependencies},
 		&inject.Object{Value: handlers.EchoDependencies},
 		&inject.Object{Value: statsdClient, Name: "statsd"},
+		&inject.Object{Value: logWriter},
 	)
 
 	if err != nil {

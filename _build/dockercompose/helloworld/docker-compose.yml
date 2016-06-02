@@ -1,25 +1,37 @@
-helloworld_test:
-  image: helloworld
-  ports:
-    - "8001:8001"
-  environment:
-    - "CONSUL=consul:8500"
-  links:
-    - consul:consul
-    - statsd:statsd
-consul:
-  image: progrium/consul
-  ports:
-    - "9400:8400"
-    - "9500:8500"
-    - "9600:53/udp"
-  hostname: node1
-  command: "-server -bootstrap -ui-dir /ui"
-statsd:
-  image: hopsoft/graphite-statsd
-  ports:
-    - "8080:80"
-    - "2003:2003"
-    - "8125:8125/udp"
-    - "8126:8126"
-
+version: '2'
+services:
+  helloworld:
+    image: helloworld
+    ports:
+      - "::8001"
+    environment:
+      - "CONSUL=consul:8500"
+    links:
+      - consul:consul
+      - statsd:statsd
+  consul:
+    image: progrium/consul
+    ports:
+      - "::8500"
+    hostname: node1
+    command: "-server -bootstrap -ui-dir /ui"
+  statsd:
+    image: hopsoft/graphite-statsd
+    ports:
+      - "::80"
+    expose:
+      - "8125/udp"
+    environment:
+      - "SERVICE_8125_NAME=statsd-8125"
+  registrator:
+    image: 'gliderlabs/registrator:latest'
+    links:
+      - consul:consul
+    command: '-internal -tags=dev consul://consul:8500'
+    volumes:
+      - '/var/run/docker.sock:/tmp/docker.sock'
+  syslog:
+    image: 'factorish/syslog'
+    command: '-t udp'
+    environment:
+      - "SERVICE_514_NAME=syslog-514"
