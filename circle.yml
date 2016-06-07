@@ -22,5 +22,4 @@ dependencies:
 
 test:
   override:
-    - cd /home/ubuntu/go/src/github.com/nicholasjackson/helloworld/_build && rake app:build_image
-    - cd /home/ubuntu/go/src/github.com/nicholasjackson/helloworld/_build && rake app:cucumber
+    - cd /home/ubuntu/go/src/github.com/nicholasjackson/helloworld/_build && rake app:build_image && rake app:cucumber && rake app:push
