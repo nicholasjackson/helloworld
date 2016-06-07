@@ -11,6 +11,7 @@ machine:
     - docker
   environment:
     GOPATH: /home/ubuntu/go
+    SSL_KEY_PATH: /home/ubuntu/.ssh
 
 dependencies:
   override:
